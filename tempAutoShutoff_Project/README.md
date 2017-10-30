@@ -1,4 +1,4 @@
-Copyright (c) <year> <copyright holders>
+Copyright (c) <2017> <copyright Scott Carlson, Melvin Schmid>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +19,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-
-
 This project is aimed at creating an temperature monitoring system that will automatically shutoff a heater unit.
 
 Main components are:
@@ -29,4 +27,6 @@ Main components are:
 3) IFTTT connection via Requests with GET
 4) Smasung Smart Things Outlet controller
 
+It utilizes code found in the uctronics repo, from lesson 18 which displays the info on the screen.
 
+To use this code you will need to creat an IFTTT recipe.  check out the code for more inormation about this.
