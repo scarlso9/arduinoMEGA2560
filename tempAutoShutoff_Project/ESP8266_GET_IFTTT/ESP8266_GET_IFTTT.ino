@@ -20,6 +20,14 @@ See http://IFTTT.com/ for more info
  Include the libraries to communicate with the WiFi Module
  This will allow us to talk to the ESP8266 with easy to use 
  commands.
+ when you click compile (the checkmark or right arrow) one of 
+ the first things it does is check that it actually can find 
+ the files you #include, and then it looks at those files
+ (they have their own set of #includes) and makes sure their
+ includes are there too.  From there the compiler usually
+ goes and check the syntax, then makes sure the functions you
+ are calling actually exist.  then after a few more checks it
+ compiles your code into 1's and 0's. 
 */
 #include "WiFiEsp.h"
 #include <LiquidCrystal.h>
@@ -63,7 +71,7 @@ char ssid[] = "FiOS-N9CWZ";            	// your network SSID (name)
 char pass[] = "soy8879ski4533flat";     // your network password
 int status = WL_IDLE_STATUS;     	// the Wifi radio's status
 char server[] = "maker.ifttt.com"; 	// The IFTTT site (This was taken from documentation from IFTTT.com instructions)
-char content[] = "trigger/half_full/with/key/c9z7GybuXNU0d69DfNfyIs"               // this is the specific URL link the request is sent to (imagine a url made up of server/content) that 
+char content = "trigger/half_full/with/key/c9z7GybuXNU0d69DfNfyIs";               // this is the specific URL link the request is sent to (imagine a url made up of server/content) that 
 /* 
  Initialize the Ethernet client object.  
  This is for the WiFi Module.  It says 
@@ -81,8 +89,7 @@ WiFiEspClient client;
  3) (NOT IMPLEMENTED YET) Initialize the temp sensor
 ************************************************************************************/
 void setup()
-{
-  clock.begin();  
+{  
   Serial.begin(115200);		// initizliat Serial for debugging
   lcd.begin(16, 2);       // set up the LCD's number of columns and rows: 
   lcd.clear();            // clears the LCD screen and positions the cursor in the upper-left corner 
@@ -131,7 +138,7 @@ void notify()
   if (client.connect(server, 80)) {
     Serial.println("Connected to server");
     // Make a HTTP request
-    client.println("GET  " + content + " HTTP/1.1");  // initialize the http request
+    client.println("GET %s HTTP/1.1", content);  // initialize the http request
     client.println("Host: maker.ifttt.com");
     client.println("Accept: */*");
     client.println("Content-Length: " + content.length());
