@@ -58,8 +58,8 @@ SoftwareSerial Serial1(6, 7); // RX, TX
  * LCD VCC pin to 5V
 */
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);  //Define the connection LCD pin  
-
-
+dht11 DHT11;
+int DHT11PIN = 18;
 
 /*
  Lets set some Globals
@@ -71,7 +71,7 @@ char ssid[] = "FiOS-N9CWZ";            	// your network SSID (name)
 char pass[] = "soy8879ski4533flat";     // your network password
 int status = WL_IDLE_STATUS;     	// the Wifi radio's status
 char server[] = "maker.ifttt.com"; 	// The IFTTT site (This was taken from documentation from IFTTT.com instructions)
-char content = "trigger/half_full/with/key/c9z7GybuXNU0d69DfNfyIs";               // this is the specific URL link the request is sent to (imagine a url made up of server/content) that 
+const char content[] = "GET trigger/half_full/with/key/c9z7GybuXNU0d69DfNfyIs HTTP/1.1";               // this is the specific URL link the request is sent to (imagine a url made up of server/content) that 
 /* 
  Initialize the Ethernet client object.  
  This is for the WiFi Module.  It says 
@@ -138,10 +138,10 @@ void notify()
   if (client.connect(server, 80)) {
     Serial.println("Connected to server");
     // Make a HTTP request
-    client.println("GET %s HTTP/1.1", content);  // initialize the http request
+    client.println(content);  // initialize the http request
     client.println("Host: maker.ifttt.com");
     client.println("Accept: */*");
-    client.println("Content-Length: " + content.length());
+    client.println("Content-Length: " + sizeof(content));
     client.println("Content-Type: text/html; charset=utf-8");
     client.println();
     client.println(content);
@@ -189,19 +189,26 @@ void tryConnectToWiFi()
     status = WiFi.begin(ssid, pass);        // connect to WPA/WPA2 network
   }
 }
-
+double Fahrenheit(double celsius) 
+{
+        return 1.8 * celsius + 32;
+}   
+double Kelvin(double celsius)
+{
+        return celsius + 273.15;
+}    
 void checkDHT11Sensor()
 {
     int chk = DHT11.read(DHT11PIN);
-    lcd.setCursor(0, 0); // set the cursor to column 0, line 0
-    lcd.print("Humidity:");// Print a message of "Humidity: "to the LCD.
-    lcd.print((float)DHT11.humidity, 2);// Print a message of "Humidity: "to the LCD.
-    lcd.print(" % "); // Print the unit of the centigrade temperature to the LCD.
+//    lcd.setCursor(0, 0); // set the cursor to column 0, line 0
+//    lcd.print("Humidity:");// Print a message of "Humidity: "to the LCD.
+//    lcd.print((float)DHT11.humidity, 2);// Print a message of "Humidity: "to the LCD.
+//    lcd.print(" % "); // Print the unit of the centigrade temperature to the LCD.
     
-    lcd.setCursor(0, 1); // set the cursor to column 0, line 1
+    lcd.setCursor(0, 0); // set the cursor to column 0, line 1
     lcd.print("Temp:    ");// Print a message of "Temp: "to the LCD.
-    lcd.print((float)DHT11.t
-    emperature, 2);// Print a centigrade temperature to the LCD. 
+    lcd.print((float)DHT11.temperature, 2);// Print a centigrade temperature to the LCD. 
     lcd.print(" C "); // Print the unit of the centigrade temperature to the LCD.
-    delay(1000);   
 }
+
+
