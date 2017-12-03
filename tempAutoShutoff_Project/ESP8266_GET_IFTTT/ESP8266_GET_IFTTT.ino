@@ -124,10 +124,22 @@ void setup()
 ************************************************************************************/
 void loop()
 {
-  
-  // Your Code Here
-
-}
+boolean flag = false;
+  while(1) {
+    DHT11.read(DHT11PIN);
+    lcd.clear();
+    lcd.setCursor(0, 0); // set the cursor to column 0, line 0
+    lcd.print((float)DHT11.temperature, 2);// Print a centigrade temperature to the LCD.
+    lcd.setCursor(0,1);
+    lcd.print(flag);
+     if (DHT11.temperature <= 5 && flag == false){
+      notify();
+      flag = true;}
+     else if (DHT11.temperature >= 25 && flag == true){
+      notify();
+      flag = false;}
+     }
+  }
 
 
 /*
@@ -205,7 +217,8 @@ void checkDHT11Sensor()
 //    lcd.print((float)DHT11.humidity, 2);// Print a message of "Humidity: "to the LCD.
 //    lcd.print(" % "); // Print the unit of the centigrade temperature to the LCD.
     
-    lcd.setCursor(0, 0); // set the cursor to column 0, line 1
+    lcd.clear();
+    lcd.setCursor(0, 0); // set the cursor to column 0, line 0
     lcd.print("Temp:    ");// Print a message of "Temp: "to the LCD.
     lcd.print((float)DHT11.temperature, 2);// Print a centigrade temperature to the LCD. 
     lcd.print(" C "); // Print the unit of the centigrade temperature to the LCD.
